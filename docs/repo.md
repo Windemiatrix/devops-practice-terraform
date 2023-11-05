@@ -1,10 +1,10 @@
 # Рекомендации по настройке репозитория
 
+Описаны включенные опции.
+
 ## General
 
 ### Pull Requests
-
-Enabled options:
 
 - Allow squash merging 
 - Always suggest updating pull request branches
