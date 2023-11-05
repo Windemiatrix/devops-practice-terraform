@@ -7,5 +7,13 @@
 ## Структура репозитория
 
 - [docs](docs) - документация.
+  - [cloud-init.md](docs/cloud-init.md) - первоначальная настройка облака.
   - [git-commit.md](docs/git-commits.md) - рекомендации по commit сообщениям.
   - [repo.md](docs/repo.md) - рекомендации по настройке репозитория.
+
+## Порядок настройки инструментов
+
+1. Сделайте форк этого репозитория; настройке его ([docs/repo.md](docs/repo.md)).
+2. Установите `docker` ([Install Docker Engine](https://docs.docker.com/engine/install/)).
+3. Установите `vscode` ([Download Visual Studio Code](https://code.visualstudio.com/download)). Дальнейшую работу с рекомендуется продолжать в dev контейнере через `vscode`.
+4. Настройте Яндекс облако ([docs/cloud-init.md](docs/cloud-init.md)).

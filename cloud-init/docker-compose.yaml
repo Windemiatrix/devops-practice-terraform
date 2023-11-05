@@ -1,0 +1,8 @@
+version: '3.7'
+services:
+  app1:
+    container_name: atlantis
+    image: "ghcr.io/runatlantis/atlantis:v0.26-alpine"
+    ports:
+      - "4141:4141"
+    restart: always
