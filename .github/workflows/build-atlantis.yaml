@@ -52,7 +52,8 @@ jobs:
     - name: Build image
       uses: docker/build-push-action@v4
       with:
-        context: atlantis
+        file: atlantis/Dockerfile
+        context: .
         tags: ${{ secrets.DOCKER_REGISTRY }}/atlantis:${{ steps.prepare.outputs.version }}
         push: true
         # push: ${{ github.ref == 'refs/heads/main' }}
