@@ -86,4 +86,4 @@ lint-all:
 
 .PHONY: conftest
 conftest:
-	conftest verify -p ./policies --report notes
+	conftest verify -p ./atlantis/policies --report notes
