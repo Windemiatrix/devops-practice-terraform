@@ -22,7 +22,7 @@ cat <<EOF >./__autogen_backend.tf
 terraform {
   backend "s3" {
     endpoint   = "storage.yandexcloud.net"
-    bucket     = "ts-mr-terraform"
+    bucket     = "tfstate-wkhhl825bkiw6xke"
     region     = "ru-central1"
     key        = "${BASE_REPO_OWNER}/${BASE_REPO_NAME}/${PROJECT_DIR}"
     access_key = "${YC_STORAGE_ACCESS_KEY}"
