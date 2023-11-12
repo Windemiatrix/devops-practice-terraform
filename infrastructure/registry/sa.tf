@@ -6,7 +6,7 @@ resource "yandex_iam_service_account" "gha" {
 
 resource "yandex_container_registry_iam_binding" "this" {
   registry_id = yandex_container_registry.this.id
-  role        = "container-registry.images.puller"
+  role        = "container-registry.images.pusher"
   members = [
     "serviceAccount:${yandex_iam_service_account.gha.id}",
   ]
