@@ -54,6 +54,6 @@ jobs:
       with:
         file: atlantis/Dockerfile
         context: .
-        tags: ${{ secrets.DOCKER_REGISTRY }}/atlantis:${{ steps.prepare.outputs.version }}
+        tags: ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.YA_CR_ID }}/atlantis:${{ steps.prepare.outputs.version }}
         push: true
         # push: ${{ github.ref == 'refs/heads/main' }}
