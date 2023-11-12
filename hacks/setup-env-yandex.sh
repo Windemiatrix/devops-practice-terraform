@@ -1,8 +1,8 @@
 #!/bin/bash
 
-cloud_id=b1g4vva7tlne0vi7o5v2
-folder_id=b1gc4icvp3odr1k2i4pi
-terraform_state_keys_secret_id=e6qta9bg4j4qgc55t693
+cloud_id=b1gmttedcb1ksiis7dg4
+folder_id=b1gvsp3ff1a1is4a8t6g
+terraform_state_keys_secret_id=e6q8f31urha36u6r0923
 
 yc init --cloud-id=${cloud_id} --folder-id=${folder_id}
 

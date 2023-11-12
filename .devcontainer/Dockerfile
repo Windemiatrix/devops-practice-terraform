@@ -50,3 +50,5 @@ RUN curl https://storage.yandexcloud.net/yandexcloud-yc/install.sh | \
 ENV PATH="$PATH:/opt/yc/bin"
 
 COPY .terraformrc /home/vscode/.terraformrc
+
+RUN mkdir -p /tmp/terraform/
