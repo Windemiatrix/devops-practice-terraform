@@ -6,6 +6,10 @@ resource "yandex_lockbox_secret" "gha" {
 resource "yandex_lockbox_secret_version" "gha" {
   secret_id = yandex_lockbox_secret.gha.id
   entries {
+    key        = "YA_CR_ID"
+    text_value = yandex_container_registry.this.id
+  }
+  entries {
     key        = "YA_CR_USERNAME"
     text_value = "json_key"
   }
