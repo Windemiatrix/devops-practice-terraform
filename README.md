@@ -18,6 +18,7 @@
 3. Установите `vscode` ([Download Visual Studio Code](https://code.visualstudio.com/download)). 
 4. Установите расширение для `vscode` для работы с dev-контейнерами (ms-vscode-remote.remote-containers). Дальнейшую работу с рекомендуется продолжать в dev контейнере через `vscode`.
 5. Настройте Яндекс облако ([docs/cloud-init.md](docs/cloud-init.md)).
+6. Настройте Atlantis ([docs/atlantis.md](docs/atlantis.md)).
 
 ## Локальная разработка
 
