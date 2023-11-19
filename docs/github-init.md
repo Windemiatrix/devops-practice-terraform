@@ -36,5 +36,3 @@
    - Нажмите "Generate new token".
    - Введите описание для токена, выберите необходимые разрешения (для работы с GitHub Packages вам потребуется разрешение `write:packages`) и нажмите "Generate token".
    - Скопируйте новый токен и сохраните его в безопасном месте. Он не будет показан снова.
-
-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
