@@ -57,7 +57,7 @@ jobs:
       uses: docker/metadata-action@v5
       with:
         images: |
-          atlantis
+          ${{ env.DOCKER_REPO }}/atlantis
         tags: |
           type=raw,event=push,value=${{github.event.inputs.version_override}},enable=${{github.event.inputs.version_override != ''}},suffix=
           type=raw,event=push,value=latest,enable=${{github.event.inputs.version_override != ''}},suffix=
