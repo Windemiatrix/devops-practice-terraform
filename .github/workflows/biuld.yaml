@@ -10,7 +10,7 @@ on:
     paths:
       - 'hacks/auto-backend*'
       - 'atlantis/**'
-      - '.devcontainer/**'
+      - '.devcontainer/Dockerfile'
       - '.github/workflows/biuld.yaml'
 
 jobs:
@@ -30,6 +30,7 @@ jobs:
         echo "version=$(echo ${BRANCH}-${COMMIT_SHA_SHORT})" >>$GITHUB_OUTPUT
 
   build-atlantis:
+    name: Build and push Atlantis image
     needs: prepare
     runs-on: ubuntu-latest
     env:
@@ -82,6 +83,7 @@ jobs:
         tags: ${{ steps.meta.outputs.tags }}
 
   build-devcontainer:
+    name: Build and push Devcontainer image
     needs: prepare
     runs-on: ubuntu-latest
     env:

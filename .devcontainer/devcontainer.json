@@ -1,8 +1,6 @@
 {
     "name": "Alpine",
-    "build": {
-        "dockerfile": "Dockerfile"
-    },
+    "image": "ghcr.io/windemiatrix/devops-practice-terraform/devcontainer:github-actions-7b46765",
     "customizations": {
         "vscode": {
             "extensions": [
@@ -13,6 +11,5 @@
             ]
         }
     },
-    "postAttachCommand": "pre-commit install && touch .env && sed -i -e 's/\r$//' ./hacks/*.sh && chmod +x ./hacks/*.sh && make setup"
+    "postAttachCommand": "pre-commit install && touch .env && make setup"
 }
-
