@@ -18,6 +18,7 @@
       - Status checks that are required
         - atlantis/policy_check
         - atlantis/plan
+    - Require conversation resolution before merging
     - Require linear history
     - Do not allow bypassing the above settings
 
