@@ -47,21 +47,37 @@ jobs:
         password: ${{ secrets.GH_CR_TOKEN }}
 
     - name: Build and push Atlantis Docker image
+      if: ${{ github.event.inputs.version_override == '' }}
       uses: docker/build-push-action@v2
       with:
         context: .
         file: ./atlantis/Dockerfile
         push: true
-        tags: |
-          ghcr.io/${{ secrets.GH_CR_USERNAME }}/${{ github.repository }}/atlantis:${{ github.event.inputs.version_override || env.version }}
-          ${{ github.event.inputs.version_override != '' && format('ghcr.io/{0}/{1}/atlantis:latest', secrets.GH_CR_USERNAME, github.repository) }}
+        tags: ghcr.io/${{ secrets.GH_CR_USERNAME }}/${{ github.repository }}/atlantis:${{ github.event.inputs.version_override || env.version }}
+
+    - name: Tag Atlantis Docker image as latest
+      if: ${{ github.event.inputs.version_override != '' }}
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        file: ./atlantis/Dockerfile
+        push: true
+        tags: ghcr.io/${{ secrets.GH_CR_USERNAME }}/${{ github.repository }}/atlantis:latest
 
     - name: Build and push Devcontainer Docker image
+      if: ${{ github.event.inputs.version_override == '' }}
       uses: docker/build-push-action@v2
       with:
         context: ./.devcontainer
         file: ./.devcontainer/Dockerfile
         push: true
-        tags: |
-          ghcr.io/${{ secrets.GH_CR_USERNAME }}/${{ github.repository }}/devcontainer:${{ github.event.inputs.version_override || env.version }}
-          ${{ github.event.inputs.version_override != '' && format('ghcr.io/{0}/{1}/devcontainer:latest', secrets.GH_CR_USERNAME, github.repository) }}
+        tags: ghcr.io/${{ secrets.GH_CR_USERNAME }}/${{ github.repository }}/devcontainer:${{ github.event.inputs.version_override || env.version }}
+
+    - name: Tag Devcontainer Docker image as latest
+      if: ${{ github.event.inputs.version_override != '' }}
+      uses: docker/build-push-action@v2
+      with:
+        context: ./.devcontainer
+        file: ./.devcontainer/Dockerfile
+        push: true
+        tags: ghcr.io/${{ secrets.GH_CR_USERNAME }}/${{ github.repository }}/devcontainer:latest
