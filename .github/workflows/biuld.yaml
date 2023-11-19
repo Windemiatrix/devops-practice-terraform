@@ -32,10 +32,11 @@ jobs:
   build:
     needs: prepare
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dockerfile: ['atlantis', 'devcontainer']
     env:
-      # Set docker repo to either the fork or the main repo where the branch exists
       DOCKER_REPO: ghcr.io/${{ github.repository }}
-
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -52,25 +53,12 @@ jobs:
         driver-opts: |
           image=moby/buildkit:v0.10.6
 
-    - name: Atlantis docker meta
-      id: meta_atlantis
+    - name: Docker meta
+      id: meta
       uses: docker/metadata-action@v5
       with:
         images: |
-          ${{ env.DOCKER_REPO }}/atlantis
-        tags: |
-          type=raw,event=push,value=${{github.event.inputs.version_override}},enable=${{github.event.inputs.version_override != ''}},suffix=
-          type=raw,event=push,value=latest,enable=${{github.event.inputs.version_override != ''}},suffix=
-          type=raw,event=push,value=${{needs.prepare.outputs.version}},enable=${{github.event.inputs.version_override == ''}},suffix=
-        flavor: |
-          latest=false
-
-    - name: Devcontainer docker meta
-      id: meta_devcontainer
-      uses: docker/metadata-action@v5
-      with:
-        images: |
-          ${{ env.DOCKER_REPO }}/devcontainer
+          ${{ env.DOCKER_REPO }}/${{ matrix.dockerfile }}
         tags: |
           type=raw,event=push,value=${{github.event.inputs.version_override}},enable=${{github.event.inputs.version_override != ''}},suffix=
           type=raw,event=push,value=latest,enable=${{github.event.inputs.version_override != ''}},suffix=
@@ -85,22 +73,12 @@ jobs:
         username: ${{ secrets.GH_CR_USERNAME }}
         password: ${{ secrets.GH_CR_TOKEN }}
 
-    - name: Build and push Atlantis Docker image
+    - name: Build and push Docker image
       if: ${{ github.event.inputs.version_override == '' }}
       uses: docker/build-push-action@v5
       with:
-        context: .
+        context: ./${{ matrix.dockerfile }}
         platforms: linux/amd64,linux/arm64
-        file: ./atlantis/Dockerfile
+        file: ./${{ matrix.dockerfile }}/Dockerfile
         push: true
-        tags: ${{ steps.meta_atlantis.outputs.tags }}
-
-    - name: Build and push Devcontainer Docker image
-      if: ${{ github.event.inputs.version_override == '' }}
-      uses: docker/build-push-action@v5
-      with:
-        context: ./.devcontainer
-        platforms: linux/amd64,linux/arm64
-        file: ./.devcontainer/Dockerfile
-        push: true
-        tags: ${{ steps.meta_devcontainer.outputs.tags }}
+        tags: ${{ steps.meta.outputs.tags }}
