@@ -6,7 +6,6 @@ on:
       - 'hacks/auto-backend*'
       - 'atlantis/**'
       - '.devcontainer/Dockerfile'
-      - '.github/workflows/biuld.yaml'
 
 jobs:
   prepare:
@@ -23,9 +22,31 @@ jobs:
         COMMIT_SHA_SHORT=$(echo ${GITHUB_SHA} | cut -c1-7)
         echo "version=$(echo ${BRANCH}-${COMMIT_SHA_SHORT})" >>$GITHUB_OUTPUT
 
+  paths-filter:
+    name: Path filter
+    runs-on: ubuntu-latest
+    outputs:
+      atlantis: ${{ steps.filter.outputs.atlantis }}
+      devcontainer: ${{ steps.filter.outputs.devcontainer }}
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - uses: dorny/paths-filter@v2
+      id: filter
+      with:
+        filters: |
+          atlantis:
+            - 'hacks/auto-backend*'
+            - 'atlantis/**'
+          devcontainer:
+            - '.devcontainer/Dockerfile'
+
   build-atlantis:
     name: Atlantis image
-    needs: prepare
+    if: needs.paths-filter.outputs.atlantis == 'true'
+    needs: 
+      - prepare
+      - paths-filter
     runs-on: ubuntu-latest
     env:
       DOCKER_REPO: ghcr.io/${{ github.repository }}
@@ -75,7 +96,10 @@ jobs:
 
   build-devcontainer:
     name: Devcontainer image
-    needs: prepare
+    if: needs.paths-filter.outputs.devcontainer == 'true'
+    needs: 
+      - prepare
+      - paths-filter
     runs-on: ubuntu-latest
     env:
       DOCKER_REPO: ghcr.io/${{ github.repository }}
