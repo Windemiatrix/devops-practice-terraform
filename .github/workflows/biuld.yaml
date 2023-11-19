@@ -27,7 +27,7 @@ jobs:
       run: |
         BRANCH=$(echo ${GITHUB_REF#refs/heads/})
         COMMIT_SHA_SHORT=$(echo ${GITHUB_SHA} | cut -c1-7)
-        echo "name=version::$(echo ${BRANCH}-${COMMIT_SHA_SHORT})" >>$GITHUB_OUTPUT
+        echo "version=$(echo ${BRANCH}-${COMMIT_SHA_SHORT})" >>$GITHUB_OUTPUT
 
   build-atlantis:
     needs: prepare
@@ -127,7 +127,7 @@ jobs:
       if: ${{ github.event.inputs.version_override == '' }}
       uses: docker/build-push-action@v5
       with:
-        context: ./.devcontainer
+        context: .
         platforms: linux/amd64,linux/arm64
         file: ./.devcontainer/Dockerfile
         push: true
