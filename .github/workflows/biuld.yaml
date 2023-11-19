@@ -127,7 +127,7 @@ jobs:
       if: ${{ github.event.inputs.version_override == '' }}
       uses: docker/build-push-action@v5
       with:
-        context: .
+        context: .devcontainer
         platforms: linux/amd64,linux/arm64
         file: ./.devcontainer/Dockerfile
         push: true
