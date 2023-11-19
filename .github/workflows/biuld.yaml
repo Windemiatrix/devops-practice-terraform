@@ -1,17 +1,17 @@
 name: Build and Push Docker Images
 
 on:
-  push:
-    paths:
-      - 'hacks/auto-backend*'
-      - 'atlantis/**'
-      - '.devcontainer/**'
-      - '.github/workflows/build-atlantis.yaml'
   workflow_dispatch:
     inputs:
       version_override:
         description: 'Override version tag'
         required: false
+  push:
+    paths:
+      - 'hacks/auto-backend*'
+      - 'atlantis/**'
+      - '.devcontainer/**'
+      - '.github/workflows/biuld.yaml'
 
 jobs:
   prepare:
@@ -55,7 +55,7 @@ jobs:
         push: true
         tags: |
           ghcr.io/${{ secrets.GH_CR_USERNAME }}/${{ github.repository }}/atlantis:${{ github.event.inputs.version_override || needs.prepare.outputs.version }}
-          ${{ github.event.inputs.version_override != '' && 'ghcr.io/' + secrets.GH_CR_USERNAME + '/' + github.repository + '/atlantis:latest' }}
+          ${{ github.event.inputs.version_override != '' && format('ghcr.io/{0}/{1}/atlantis:latest', secrets.GH_CR_USERNAME, github.repository) }}
 
     - name: Build and push Devcontainer Docker image
       uses: docker/build-push-action@v2
@@ -65,4 +65,4 @@ jobs:
         push: true
         tags: |
           ghcr.io/${{ secrets.GH_CR_USERNAME }}/${{ github.repository }}/devcontainer:${{ github.event.inputs.version_override || needs.prepare.outputs.version }}
-          ${{ github.event.inputs.version_override != '' && 'ghcr.io/' + secrets.GH_CR_USERNAME + '/' + github.repository + '/devcontainer:latest' }}
+          ${{ github.event.inputs.version_override != '' && format('ghcr.io/{0}/{1}/devcontainer:latest', secrets.GH_CR_USERNAME, github.repository) }}
