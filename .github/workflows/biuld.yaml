@@ -53,7 +53,7 @@ jobs:
         context: .
         file: ./atlantis/Dockerfile
         push: true
-        tags: ghcr.io/${{ secrets.GH_CR_USERNAME }}/${{ github.repository }}/atlantis:${{ github.event.inputs.version_override || env.version }}
+        tags: ghcr.io/${{ secrets.GH_CR_USERNAME }}/${{ github.repository }}/atlantis:${{ github.event.inputs.version_override }}
 
     - name: Tag Atlantis Docker image as latest
       if: ${{ github.event.inputs.version_override != '' }}
@@ -62,7 +62,9 @@ jobs:
         context: .
         file: ./atlantis/Dockerfile
         push: true
-        tags: ghcr.io/${{ secrets.GH_CR_USERNAME }}/${{ github.repository }}/atlantis:latest
+        tags: |
+          ghcr.io/${{ secrets.GH_CR_USERNAME }}/${{ github.repository }}/atlantis:latest
+          ghcr.io/${{ secrets.GH_CR_USERNAME }}/${{ github.repository }}/atlantis:${{ env.version }}
 
     - name: Build and push Devcontainer Docker image
       if: ${{ github.event.inputs.version_override == '' }}
@@ -71,7 +73,7 @@ jobs:
         context: ./.devcontainer
         file: ./.devcontainer/Dockerfile
         push: true
-        tags: ghcr.io/${{ secrets.GH_CR_USERNAME }}/${{ github.repository }}/devcontainer:${{ github.event.inputs.version_override || env.version }}
+        tags: ghcr.io/${{ secrets.GH_CR_USERNAME }}/${{ github.repository }}/devcontainer:${{ github.event.inputs.version_override }}
 
     - name: Tag Devcontainer Docker image as latest
       if: ${{ github.event.inputs.version_override != '' }}
@@ -80,4 +82,6 @@ jobs:
         context: ./.devcontainer
         file: ./.devcontainer/Dockerfile
         push: true
-        tags: ghcr.io/${{ secrets.GH_CR_USERNAME }}/${{ github.repository }}/devcontainer:latest
+        tags: |
+          ghcr.io/${{ secrets.GH_CR_USERNAME }}/${{ github.repository }}/devcontainer:latest
+          ghcr.io/${{ secrets.GH_CR_USERNAME }}/${{ github.repository }}/devcontainer:${{ env.version }}
