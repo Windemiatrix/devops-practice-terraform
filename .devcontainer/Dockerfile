@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/devcontainers/base:ubuntu
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/devcontainers/base:ubuntu
 
 # must be amd64 or arm64
 ARG TARGETARCH
