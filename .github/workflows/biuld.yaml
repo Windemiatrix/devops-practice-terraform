@@ -52,8 +52,21 @@ jobs:
         driver-opts: |
           image=moby/buildkit:v0.10.6
 
-    - name: Docker meta
-      id: meta
+    - name: Atlantis docker meta
+      id: meta_atlantis
+      uses: docker/metadata-action@v5
+      with:
+        images: |
+          ${{ env.DOCKER_REPO }}/atlantis
+        tags: |
+          type=raw,event=push,value=${{github.event.inputs.version_override}},enable=${{github.event.inputs.version_override != ''}},suffix=
+          type=raw,event=push,value=latest,enable=${{github.event.inputs.version_override != ''}},suffix=
+          type=raw,event=push,value=${{needs.prepare.outputs.version}},enable=${{github.event.inputs.version_override == ''}},suffix=
+        flavor: |
+          latest=false
+
+    - name: Devcontainer docker meta
+      id: meta_devcontainer
       uses: docker/metadata-action@v5
       with:
         images: |
@@ -80,38 +93,14 @@ jobs:
         platforms: linux/amd64,linux/arm64
         file: ./atlantis/Dockerfile
         push: true
-        tags: ${{ steps.meta.outputs.tags }}
+        tags: ${{ steps.meta_atlantis.outputs.tags }}
 
-    # - name: Tag Atlantis Docker image as latest
-    #   if: ${{ github.event.inputs.version_override != '' }}
-    #   uses: docker/build-push-action@v5
-    #   with:
-    #     context: .
-    #     platforms: linux/amd64,linux/arm64
-    #     file: ./atlantis/Dockerfile
-    #     push: true
-    #     tags: |
-    #       ${{ steps.repo_slug.outputs.result }}/atlantis:latest
-    #       ${{ steps.repo_slug.outputs.result }}/atlantis:${{ github.event.inputs.version_override }}
-
-    # - name: Build and push Devcontainer Docker image
-    #   if: ${{ github.event.inputs.version_override == '' }}
-    #   uses: docker/build-push-action@v5
-    #   with:
-    #     context: ./.devcontainer
-    #     platforms: linux/amd64,linux/arm64
-    #     file: ./.devcontainer/Dockerfile
-    #     push: true
-    #     tags: ${{ steps.repo_slug.outputs.result }}/devcontainer:${{ needs.prepare.outputs.version }}
-
-    # - name: Tag Devcontainer Docker image as latest
-    #   if: ${{ github.event.inputs.version_override != '' }}
-    #   uses: docker/build-push-action@v5
-    #   with:
-    #     context: ./.devcontainer
-    #     platforms: linux/amd64,linux/arm64
-    #     file: ./.devcontainer/Dockerfile
-    #     push: true
-    #     tags: |
-    #       ${{ steps.repo_slug.outputs.result }}/devcontainer:latest
-    #       ${{ steps.repo_slug.outputs.result }}/devcontainer:${{ github.event.inputs.version_override }}
+    - name: Build and push Devcontainer Docker image
+      if: ${{ github.event.inputs.version_override == '' }}
+      uses: docker/build-push-action@v5
+      with:
+        context: ./.devcontainer
+        platforms: linux/amd64,linux/arm64
+        file: ./.devcontainer/Dockerfile
+        push: true
+        tags: ${{ steps.meta_devcontainer.outputs.tags }}
