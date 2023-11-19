@@ -34,28 +34,19 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Check for changes in specific directories
-      id: check_changes
-      run: |
-        echo "::set-output name=react_app::$(git diff --quiet HEAD^ HEAD -- .github/workflows/biuld.yaml || echo 'true')"
-        echo "::set-output name=react_app::$(git diff --quiet HEAD^ HEAD -- ./.devcontainer/Dockerfile || echo 'true')"
-
     - name: Set up QEMU
-      if: steps.check_changes.outputs.server == 'true'
       uses: docker/setup-qemu-action@v3
       with:
         image: tonistiigi/binfmt:latest
         platforms: arm64,arm
 
     - name: Set up Docker Buildx
-      if: steps.check_changes.outputs.server == 'true'
       uses: docker/setup-buildx-action@v3
       with:
         driver-opts: |
           image=moby/buildkit:v0.10.6
 
     - name: Docker meta
-      if: steps.check_changes.outputs.server == 'true'
       id: meta
       uses: docker/metadata-action@v5
       with:
@@ -67,7 +58,6 @@ jobs:
           latest=false
 
     - name: Login to GitHub Container Registry
-      if: steps.check_changes.outputs.server == 'true'
       uses: docker/login-action@v3
       with:
         registry: ghcr.io
@@ -75,7 +65,6 @@ jobs:
         password: ${{ secrets.GH_CR_TOKEN }}
 
     - name: Build and push Docker image
-      if: steps.check_changes.outputs.server == 'true'
       uses: docker/build-push-action@v5
       with:
         context: .
@@ -95,29 +84,19 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Check for changes in specific directories
-      id: check_changes
-      run: |
-        echo "::set-output name=react_app::$(git diff --quiet HEAD^ HEAD -- .github/workflows/biuld.yaml || echo 'true')"
-        echo "::set-output name=react_app::$(git diff --quiet HEAD^ HEAD -- atlantis || echo 'true')"
-        echo "::set-output name=react_app::$(git diff --quiet HEAD^ HEAD -- hacks || echo 'true')"
-
     - name: Set up QEMU
-      if: steps.check_changes.outputs.server == 'true'
       uses: docker/setup-qemu-action@v3
       with:
         image: tonistiigi/binfmt:latest
         platforms: arm64,arm
 
     - name: Set up Docker Buildx
-      if: steps.check_changes.outputs.server == 'true'
       uses: docker/setup-buildx-action@v3
       with:
         driver-opts: |
           image=moby/buildkit:v0.10.6
 
     - name: Docker meta
-      if: steps.check_changes.outputs.server == 'true'
       id: meta
       uses: docker/metadata-action@v5
       with:
@@ -129,7 +108,6 @@ jobs:
           latest=false
 
     - name: Login to GitHub Container Registry
-      if: steps.check_changes.outputs.server == 'true'
       uses: docker/login-action@v3
       with:
         registry: ghcr.io
@@ -137,7 +115,6 @@ jobs:
         password: ${{ secrets.GH_CR_TOKEN }}
 
     - name: Build and push Docker image
-      if: steps.check_changes.outputs.server == 'true'
       if: ${{ github.event.inputs.version_override == '' }}
       uses: docker/build-push-action@v5
       with:
