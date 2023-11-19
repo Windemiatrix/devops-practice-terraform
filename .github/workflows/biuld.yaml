@@ -24,6 +24,7 @@ jobs:
         echo "version=$(echo ${BRANCH}-${COMMIT_SHA_SHORT})" >>$GITHUB_OUTPUT
 
   atlantis-paths-filter:
+    name: Atlantis path filter
     runs-on: ubuntu-latest
     outputs:
       isWorkflow: ${{ steps.filter.outputs.workflows }}
@@ -93,6 +94,7 @@ jobs:
         tags: ${{ steps.meta.outputs.tags }}
 
   devcontainer-paths-filter:
+    name: Devcontainer path filter
     runs-on: ubuntu-latest
     outputs:
       isWorkflow: ${{ steps.filter.outputs.workflows }}
