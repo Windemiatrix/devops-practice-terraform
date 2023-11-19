@@ -1,11 +1,6 @@
 name: Build and Push Docker Images
 
 on:
-  workflow_dispatch:
-    inputs:
-      version_override:
-        description: 'Override version tag'
-        required: false
   push:
     paths:
       - 'hacks/auto-backend*'
@@ -15,7 +10,6 @@ on:
 
 jobs:
   prepare:
-    if: ${{ github.event.inputs.version_override == '' }}
     name: Prepare variables
     runs-on: ubuntu-latest
     outputs:
@@ -59,9 +53,7 @@ jobs:
         images: |
           ${{ env.DOCKER_REPO }}/atlantis
         tags: |
-          type=raw,event=push,value=${{github.event.inputs.version_override}},enable=${{github.event.inputs.version_override != ''}},suffix=
-          type=raw,event=push,value=latest,enable=${{github.event.inputs.version_override != ''}},suffix=
-          type=raw,event=push,value=${{needs.prepare.outputs.version}},enable=${{github.event.inputs.version_override == ''}},suffix=
+          type=raw,event=push,value=${{needs.prepare.outputs.version}},enable=true,suffix=
         flavor: |
           latest=false
 
@@ -112,9 +104,7 @@ jobs:
         images: |
           ${{ env.DOCKER_REPO }}/devcontainer
         tags: |
-          type=raw,event=push,value=${{github.event.inputs.version_override}},enable=${{github.event.inputs.version_override != ''}},suffix=
-          type=raw,event=push,value=latest,enable=${{github.event.inputs.version_override != ''}},suffix=
-          type=raw,event=push,value=${{needs.prepare.outputs.version}},enable=${{github.event.inputs.version_override == ''}},suffix=
+          type=raw,event=push,value=${{needs.prepare.outputs.version}},enable=true,suffix=
         flavor: |
           latest=false
 
