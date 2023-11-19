@@ -47,8 +47,8 @@ jobs:
       uses: docker/login-action@v3
       with:
         registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+        username: ${{ secrets.GH_CR_USERNAME }}
+        password: ${{ secrets.GH_CR_TOKEN }}
 
     - name: Sanitize repo slug
       uses: actions/github-script@v6
