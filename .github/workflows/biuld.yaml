@@ -41,48 +41,55 @@ jobs:
       uses: docker/setup-buildx-action@v1
 
     - name: Login to GitHub Container Registry
-      uses: docker/login-action@v1 
+      uses: docker/login-action@v3
       with:
         registry: ghcr.io
         username: ${{ secrets.GH_CR_USERNAME }}
         password: ${{ secrets.GH_CR_TOKEN }}
 
+    - name: Sanitize repo slug
+      uses: actions/github-script@v6
+      id: repo_slug
+      with:
+        result-encoding: string
+        script: return 'ghcr.io/${{ secrets.GH_CR_USERNAME }}/${{ github.repository }}'.toLowerCase()
+
     - name: Build and push Atlantis Docker image
       if: ${{ github.event.inputs.version_override == '' }}
-      uses: docker/build-push-action@v2
+      uses: docker/build-push-action@v5
       with:
         context: .
         file: ./atlantis/Dockerfile
         push: true
-        tags: ghcr.io/${{ secrets.GH_CR_USERNAME }}/${{ github.repository }}/atlantis:${{ needs.prepare.outputs.version }}
+        tags: ${{ steps.repo_slug.outputs.result }}/atlantis:${{ needs.prepare.outputs.version }}
 
     - name: Tag Atlantis Docker image as latest
       if: ${{ github.event.inputs.version_override != '' }}
-      uses: docker/build-push-action@v2
+      uses: docker/build-push-action@v5
       with:
         context: .
         file: ./atlantis/Dockerfile
         push: true
         tags: |
-          ghcr.io/${{ secrets.GH_CR_USERNAME }}/${{ github.repository }}/atlantis:latest
-          ghcr.io/${{ secrets.GH_CR_USERNAME }}/${{ github.repository }}/atlantis:${{ github.event.inputs.version_override }}
+          ${{ steps.repo_slug.outputs.result }}/atlantis:latest
+          ${{ steps.repo_slug.outputs.result }}/atlantis:${{ github.event.inputs.version_override }}
 
     - name: Build and push Devcontainer Docker image
       if: ${{ github.event.inputs.version_override == '' }}
-      uses: docker/build-push-action@v2
+      uses: docker/build-push-action@v5
       with:
         context: ./.devcontainer
         file: ./.devcontainer/Dockerfile
         push: true
-        tags: ghcr.io/${{ secrets.GH_CR_USERNAME }}/${{ github.repository }}/devcontainer:${{ needs.prepare.outputs.version }}
+        tags: ${{ steps.repo_slug.outputs.result }}/devcontainer:${{ needs.prepare.outputs.version }}
 
     - name: Tag Devcontainer Docker image as latest
       if: ${{ github.event.inputs.version_override != '' }}
-      uses: docker/build-push-action@v2
+      uses: docker/build-push-action@v5
       with:
         context: ./.devcontainer
         file: ./.devcontainer/Dockerfile
         push: true
         tags: |
-          ghcr.io/${{ secrets.GH_CR_USERNAME }}/${{ github.repository }}/devcontainer:latest
-          ghcr.io/${{ secrets.GH_CR_USERNAME }}/${{ github.repository }}/devcontainer:${{ github.event.inputs.version_override }}
+          ${{ steps.repo_slug.outputs.result }}/devcontainer:latest
+          ${{ steps.repo_slug.outputs.result }}/devcontainer:${{ github.event.inputs.version_override }}
