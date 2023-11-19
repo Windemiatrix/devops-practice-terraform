@@ -59,6 +59,7 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         context: .
+        platforms: linux/amd64,linux/arm64
         file: ./atlantis/Dockerfile
         push: true
         tags: ${{ steps.repo_slug.outputs.result }}/atlantis:${{ needs.prepare.outputs.version }}
@@ -68,6 +69,7 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         context: .
+        platforms: linux/amd64,linux/arm64
         file: ./atlantis/Dockerfile
         push: true
         tags: |
@@ -79,6 +81,7 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         context: ./.devcontainer
+        platforms: linux/amd64,linux/arm64
         file: ./.devcontainer/Dockerfile
         push: true
         tags: ${{ steps.repo_slug.outputs.result }}/devcontainer:${{ needs.prepare.outputs.version }}
@@ -88,6 +91,7 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         context: ./.devcontainer
+        platforms: linux/amd64,linux/arm64
         file: ./.devcontainer/Dockerfile
         push: true
         tags: |
