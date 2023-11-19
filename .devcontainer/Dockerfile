@@ -1,7 +1,7 @@
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/devcontainers/base:ubuntu
+FROM --platform=$TARGETPLATFORM mcr.microsoft.com/devcontainers/base:ubuntu
 
 # must be amd64 or arm64
-ARG TARGETARCH
+ARG TARGETPLATFORM
 
 # Install pip for Python3
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
@@ -10,7 +10,7 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 # TERRAFORM
 RUN cd /tmp && \
     version=1.4.4 && \
-    curl -L --output terraform.zip https://hashicorp-releases.yandexcloud.net/terraform/${version}/terraform_${version}_linux_${TARGETARCH}.zip && \
+    curl -L --output terraform.zip https://hashicorp-releases.yandexcloud.net/terraform/${version}/terraform_${version}_linux_${TARGETPLATFORM}.zip && \
     unzip terraform.zip -d /usr/local/bin && \
     rm -f terraform.zip
 
@@ -21,14 +21,14 @@ RUN export TFLINT_VERSION=v0.45.0 && \
 # TFSEC
 RUN cd /tmp && \
     version=1.28.1 && \
-    curl -L --output tfsec https://github.com/aquasecurity/tfsec/releases/download/v${version}/tfsec-linux-${TARGETARCH} && \
+    curl -L --output tfsec https://github.com/aquasecurity/tfsec/releases/download/v${version}/tfsec-linux-${TARGETPLATFORM} && \
     chmod +x tfsec && \
     mv tfsec /usr/local/bin
 
 # CONFTEST
 RUN cd /tmp && \
     version=0.40.0 && \
-    if test ${TARGETARCH} = "amd64"; then arch="x86_64"; else arch=${TARGETARCH}; fi && \
+    if test ${TARGETPLATFORM} = "amd64"; then arch="x86_64"; else arch=${TARGETPLATFORM}; fi && \
     curl -L --output conftest.tar.gz https://github.com/open-policy-agent/conftest/releases/download/v${version}/conftest_${version}_Linux_${arch}.tar.gz && \
     tar xzf conftest.tar.gz && \
     mv conftest /usr/local/bin/
@@ -36,7 +36,7 @@ RUN cd /tmp && \
 # TERRAFORM-DOCS
 RUN cd /tmp && \
     version=0.16.0 && \
-    curl -L https://github.com/terraform-docs/terraform-docs/releases/download/v${version}/terraform-docs-v${version}-linux-${TARGETARCH}.tar.gz | tar -xz && \
+    curl -L https://github.com/terraform-docs/terraform-docs/releases/download/v${version}/terraform-docs-v${version}-linux-${TARGETPLATFORM}.tar.gz | tar -xz && \
     mv terraform-docs /usr/local/bin
 
 # PRE-COMMIT - https://github.com/pre-commit/pre-commit

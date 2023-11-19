@@ -62,7 +62,10 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         context: .
-        platforms: linux/amd64,linux/arm64
+        with:
+          platforms:
+            - linux/amd64
+            - linux/arm64
         file: ./atlantis/Dockerfile
         push: true
         tags: ${{ steps.repo_slug.outputs.result }}/atlantis:${{ needs.prepare.outputs.version }}
@@ -72,31 +75,40 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         context: .
-        platforms: linux/amd64,linux/arm64
+        with:
+          platforms:
+            - linux/amd64
+            - linux/arm64
         file: ./atlantis/Dockerfile
         push: true
         tags: |
           ${{ steps.repo_slug.outputs.result }}/atlantis:latest
           ${{ steps.repo_slug.outputs.result }}/atlantis:${{ github.event.inputs.version_override }}
 
-    - name: Build and push Devcontainer Docker image
-      if: ${{ github.event.inputs.version_override == '' }}
-      uses: docker/build-push-action@v5
-      with:
-        context: ./.devcontainer
-        platforms: linux/amd64,linux/arm64
-        file: ./.devcontainer/Dockerfile
-        push: true
-        tags: ${{ steps.repo_slug.outputs.result }}/devcontainer:${{ needs.prepare.outputs.version }}
+    # - name: Build and push Devcontainer Docker image
+    #   if: ${{ github.event.inputs.version_override == '' }}
+    #   uses: docker/build-push-action@v5
+    #   with:
+    #     context: ./.devcontainer
+    #     with:
+    #       platforms:
+    #         - linux/amd64
+    #         - linux/arm64
+    #     file: ./.devcontainer/Dockerfile
+    #     push: true
+    #     tags: ${{ steps.repo_slug.outputs.result }}/devcontainer:${{ needs.prepare.outputs.version }}
 
-    - name: Tag Devcontainer Docker image as latest
-      if: ${{ github.event.inputs.version_override != '' }}
-      uses: docker/build-push-action@v5
-      with:
-        context: ./.devcontainer
-        platforms: linux/amd64,linux/arm64
-        file: ./.devcontainer/Dockerfile
-        push: true
-        tags: |
-          ${{ steps.repo_slug.outputs.result }}/devcontainer:latest
-          ${{ steps.repo_slug.outputs.result }}/devcontainer:${{ github.event.inputs.version_override }}
+    # - name: Tag Devcontainer Docker image as latest
+    #   if: ${{ github.event.inputs.version_override != '' }}
+    #   uses: docker/build-push-action@v5
+    #   with:
+    #     context: ./.devcontainer
+    #     with:
+    #       platforms:
+    #         - linux/amd64
+    #         - linux/arm64
+    #     file: ./.devcontainer/Dockerfile
+    #     push: true
+    #     tags: |
+    #       ${{ steps.repo_slug.outputs.result }}/devcontainer:latest
+    #       ${{ steps.repo_slug.outputs.result }}/devcontainer:${{ github.event.inputs.version_override }}
