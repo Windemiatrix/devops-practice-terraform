@@ -21,12 +21,13 @@ jobs:
     outputs:
       version: ${{ steps.prepare.outputs.version }}
     steps:
-      - name: Prepare variables
-        id: prepare
-        run: |
-          BRANCH=$(echo ${GITHUB_REF#refs/heads/})
-          COMMIT_SHA_SHORT=$(echo ${GITHUB_SHA} | cut -c1-7)
-          echo "version=${BRANCH}-${COMMIT_SHA_SHORT}" >> $GITHUB_ENV
+    - name: Prepare variables
+      id: prepare
+      shell: bash
+      run: |
+        BRANCH=$(echo ${GITHUB_REF#refs/heads/})
+        COMMIT_SHA_SHORT=$(echo ${GITHUB_SHA} | cut -c1-7)
+        echo "::set-output name=version::$(echo ${BRANCH}-${COMMIT_SHA_SHORT})"
 
   build:
     needs: prepare
@@ -53,7 +54,7 @@ jobs:
         context: .
         file: ./atlantis/Dockerfile
         push: true
-        tags: ghcr.io/${{ secrets.GH_CR_USERNAME }}/${{ github.repository }}/atlantis:${{ env.version }}
+        tags: ghcr.io/${{ secrets.GH_CR_USERNAME }}/${{ github.repository }}/atlantis:${{ needs.prepare.outputs.version }}
 
     - name: Tag Atlantis Docker image as latest
       if: ${{ github.event.inputs.version_override != '' }}
@@ -73,7 +74,7 @@ jobs:
         context: ./.devcontainer
         file: ./.devcontainer/Dockerfile
         push: true
-        tags: ghcr.io/${{ secrets.GH_CR_USERNAME }}/${{ github.repository }}/devcontainer:${{ env.version }}
+        tags: ghcr.io/${{ secrets.GH_CR_USERNAME }}/${{ github.repository }}/devcontainer:${{ needs.prepare.outputs.version }}
 
     - name: Tag Devcontainer Docker image as latest
       if: ${{ github.event.inputs.version_override != '' }}
