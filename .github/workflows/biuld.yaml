@@ -54,7 +54,7 @@ jobs:
         context: .
         file: ./atlantis/Dockerfile
         push: true
-        tags: ghcr.io/${{ secrets.GH_CR_USERNAME.lowercase }}/${{ github.repository }}/atlantis:${{ needs.prepare.outputs.version }}
+        tags: ghcr.io/${{ secrets.GH_CR_USERNAME }}/${{ github.repository }}/atlantis:${{ needs.prepare.outputs.version }}
 
     - name: Tag Atlantis Docker image as latest
       if: ${{ github.event.inputs.version_override != '' }}
@@ -64,8 +64,8 @@ jobs:
         file: ./atlantis/Dockerfile
         push: true
         tags: |
-          ghcr.io/${{ secrets.GH_CR_USERNAME.lowercase }}/${{ github.repository }}/atlantis:latest
-          ghcr.io/${{ secrets.GH_CR_USERNAME.lowercase }}/${{ github.repository }}/atlantis:${{ github.event.inputs.version_override }}
+          ghcr.io/${{ secrets.GH_CR_USERNAME }}/${{ github.repository }}/atlantis:latest
+          ghcr.io/${{ secrets.GH_CR_USERNAME }}/${{ github.repository }}/atlantis:${{ github.event.inputs.version_override }}
 
     - name: Build and push Devcontainer Docker image
       if: ${{ github.event.inputs.version_override == '' }}
@@ -74,7 +74,7 @@ jobs:
         context: ./.devcontainer
         file: ./.devcontainer/Dockerfile
         push: true
-        tags: ghcr.io/${{ secrets.GH_CR_USERNAME.lowercase }}/${{ github.repository }}/devcontainer:${{ needs.prepare.outputs.version }}
+        tags: ghcr.io/${{ secrets.GH_CR_USERNAME }}/${{ github.repository }}/devcontainer:${{ needs.prepare.outputs.version }}
 
     - name: Tag Devcontainer Docker image as latest
       if: ${{ github.event.inputs.version_override != '' }}
@@ -84,5 +84,5 @@ jobs:
         file: ./.devcontainer/Dockerfile
         push: true
         tags: |
-          ghcr.io/${{ secrets.GH_CR_USERNAME.lowercase }}/${{ github.repository }}/devcontainer:latest
-          ghcr.io/${{ secrets.GH_CR_USERNAME.lowercase }}/${{ github.repository }}/devcontainer:${{ github.event.inputs.version_override }}
+          ghcr.io/${{ secrets.GH_CR_USERNAME }}/${{ github.repository }}/devcontainer:latest
+          ghcr.io/${{ secrets.GH_CR_USERNAME }}/${{ github.repository }}/devcontainer:${{ github.event.inputs.version_override }}
