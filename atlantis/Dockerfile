@@ -1,4 +1,4 @@
-FROM --platform=$TARGETPLATFORM ghcr.io/runatlantis/atlantis:v0.26.0
+FROM ghcr.io/runatlantis/atlantis:v0.26.0
 
 ARG TARGETPLATFORM
 ARG TARGETARCH
