@@ -59,9 +59,9 @@ jobs:
         images: |
           ${{ env.DOCKER_REPO }}
         tags: |
-          # type=raw,event=push,value={{github.event.inputs.version_override}},enable={{github.event.inputs.version_override != ''}},suffix=
-          # type=raw,event=push,value=latest,enable={{github.event.inputs.version_override != ''}},suffix=
-          type=raw,event=push,value={{needs.prepare.outputs.version}},enable={{github.event.inputs.version_override == ''}},suffix=
+          type=raw,event=push,value=${{github.event.inputs.version_override}},enable=${{github.event.inputs.version_override != ''}},suffix=
+          type=raw,event=push,value=latest,enable=${{github.event.inputs.version_override != ''}},suffix=
+          type=raw,event=push,value=${{needs.prepare.outputs.version}},enable=${{github.event.inputs.version_override == ''}},suffix=
         flavor: |
           latest=false
 
