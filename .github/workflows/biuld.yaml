@@ -24,7 +24,7 @@ jobs:
         echo "version=$(echo ${BRANCH}-${COMMIT_SHA_SHORT})" >>$GITHUB_OUTPUT
 
   paths-filter:
-    name: Atlantis path filter
+    name: Path filter
     runs-on: ubuntu-latest
     outputs:
       atlantis: ${{ steps.filter.outputs.atlantis }}
