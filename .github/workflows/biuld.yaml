@@ -6,7 +6,6 @@ on:
       - 'hacks/auto-backend*'
       - 'atlantis/**'
       - '.devcontainer/Dockerfile'
-      - '.github/workflows/biuld.yaml'
 
 jobs:
   prepare:
@@ -39,10 +38,8 @@ jobs:
           atlantis:
             - 'hacks/auto-backend*'
             - 'atlantis/**'
-            - '.github/workflows/biuld.yaml'
           devcontainer:
             - '.devcontainer/Dockerfile'
-            - '.github/workflows/biuld.yaml'
 
   build-atlantis:
     name: Atlantis image
