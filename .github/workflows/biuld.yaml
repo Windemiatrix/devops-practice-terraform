@@ -32,6 +32,12 @@ jobs:
   build:
     needs: prepare
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - linux/amd64
+          - linux/arm64
 
     steps:
     - name: Checkout code
@@ -59,7 +65,7 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         context: .
-        platforms: linux/amd64,linux/arm64
+        platforms: ${{ matrix.platform }}
         file: ./atlantis/Dockerfile
         push: true
         tags: ${{ steps.repo_slug.outputs.result }}/atlantis:${{ needs.prepare.outputs.version }}
@@ -69,7 +75,7 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         context: .
-        platforms: linux/amd64,linux/arm64
+        platforms: ${{ matrix.platform }}
         file: ./atlantis/Dockerfile
         push: true
         tags: |
@@ -81,7 +87,7 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         context: ./.devcontainer
-        platforms: linux/amd64,linux/arm64
+        platforms: ${{ matrix.platform }}
         file: ./.devcontainer/Dockerfile
         push: true
         tags: ${{ steps.repo_slug.outputs.result }}/devcontainer:${{ needs.prepare.outputs.version }}
@@ -91,7 +97,7 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         context: ./.devcontainer
-        platforms: linux/amd64,linux/arm64
+        platforms: ${{ matrix.platform }}
         file: ./.devcontainer/Dockerfile
         push: true
         tags: |
