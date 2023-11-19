@@ -58,7 +58,7 @@ jobs:
       if: ${{ github.event.inputs.version_override == '' }}
       uses: docker/build-push-action@v5
       with:
-        context: ./atlantis
+        context: .
         file: ./atlantis/Dockerfile
         push: true
         tags: ${{ steps.repo_slug.outputs.result }}/atlantis:${{ needs.prepare.outputs.version }}
@@ -67,7 +67,7 @@ jobs:
       if: ${{ github.event.inputs.version_override != '' }}
       uses: docker/build-push-action@v5
       with:
-        context: ./atlantis
+        context: .
         file: ./atlantis/Dockerfile
         push: true
         tags: |
