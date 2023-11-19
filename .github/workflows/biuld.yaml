@@ -23,7 +23,7 @@ jobs:
         COMMIT_SHA_SHORT=$(echo ${GITHUB_SHA} | cut -c1-7)
         echo "version=$(echo ${BRANCH}-${COMMIT_SHA_SHORT})" >>$GITHUB_OUTPUT
 
-  atlantis-paths-filter:
+  paths-filter:
     name: Atlantis path filter
     runs-on: ubuntu-latest
     outputs:
