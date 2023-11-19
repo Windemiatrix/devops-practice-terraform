@@ -1,6 +1,12 @@
 name: Build and Push Docker Images
 
 on:
+  push:
+    paths:
+      - 'hacks/auto-backend*'
+      - 'atlantis/**'
+      - '.devcontainer/**'
+      - '.github/workflows/build-atlantis.yaml'
   workflow_dispatch:
     inputs:
       version_override:
