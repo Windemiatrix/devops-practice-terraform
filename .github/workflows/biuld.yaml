@@ -42,7 +42,9 @@ jobs:
   build-atlantis:
     name: Atlantis image
     if: needs.atlantis-paths-filter.outputs.isWorkflow == 'true'
-    needs: prepare
+    needs: 
+      - prepare
+      - atlantis-paths-filter
     runs-on: ubuntu-latest
     env:
       DOCKER_REPO: ghcr.io/${{ github.repository }}
@@ -108,7 +110,9 @@ jobs:
   build-devcontainer:
     name: Devcontainer image
     if: needs.devcontainer-paths-filter.outputs.isWorkflow == 'true'
-    needs: prepare
+    needs: 
+      - prepare
+      - devcontainer-paths-filter
     runs-on: ubuntu-latest
     env:
       DOCKER_REPO: ghcr.io/${{ github.repository }}
