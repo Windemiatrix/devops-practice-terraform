@@ -57,7 +57,7 @@ jobs:
       uses: docker/metadata-action@v5
       with:
         images: |
-          ${{ env.DOCKER_REPO }}
+          atlantis
         tags: |
           type=raw,event=push,value=${{github.event.inputs.version_override}},enable=${{github.event.inputs.version_override != ''}},suffix=
           type=raw,event=push,value=latest,enable=${{github.event.inputs.version_override != ''}},suffix=
@@ -71,13 +71,6 @@ jobs:
         registry: ghcr.io
         username: ${{ secrets.GH_CR_USERNAME }}
         password: ${{ secrets.GH_CR_TOKEN }}
-
-    # - name: Sanitize repo slug
-    #   uses: actions/github-script@v6
-    #   id: repo_slug
-    #   with:
-    #     result-encoding: string
-    #     script: return 'ghcr.io/${{ github.repository }}'.toLowerCase()
 
     - name: Build and push Atlantis Docker image
       if: ${{ github.event.inputs.version_override == '' }}
