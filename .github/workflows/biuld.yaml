@@ -10,7 +10,7 @@ on:
     paths:
       - 'hacks/auto-backend*'
       - 'atlantis/**'
-      - '.devcontainer/**'
+      - '.devcontainer/Dockerfile'
       - '.github/workflows/biuld.yaml'
 
 jobs:
