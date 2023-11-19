@@ -78,7 +78,7 @@ jobs:
         context: .
         platforms: linux/amd64,linux/arm64
         file: ./atlantis/Dockerfile
-        push: true
+        push: ${{github.ref == 'refs/heads/main'}}
         tags: ${{ steps.meta.outputs.tags }}
 
   build-devcontainer:
@@ -130,5 +130,5 @@ jobs:
         context: .devcontainer
         platforms: linux/amd64,linux/arm64
         file: ./.devcontainer/Dockerfile
-        push: true
+        push: ${{github.ref == 'refs/heads/main'}}
         tags: ${{ steps.meta.outputs.tags }}
