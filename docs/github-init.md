@@ -21,7 +21,7 @@
     - Require linear history
     - Do not allow bypassing the above settings
 
-# Настройка секретов для работы GitHub Actions
+## Настройка секретов для работы GitHub Actions
 
 Нам нужно создать секреты в настройках репозитория: `GH_CR_USERNAME` и `GH_CR_TOKEN`.
 
