@@ -1,5 +1,6 @@
 resource "yandex_compute_instance" "vm" {
-  name = "terraform1"
+  name      = "terraform1"
+  folder_id = yandex_resourcemanager_folder.this.id
 
   resources {
     cores  = 2
