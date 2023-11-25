@@ -18,9 +18,9 @@ resource "yandex_compute_instance" "vm" {
     nat       = true
   }
 
-  #  metadata = {
-  #    ssh-keys = "ubuntu:${file("~/.ssh/id_ed25519.pub")}"
-  #  }
+  metadata = {
+    ssh-keys = "ubuntu:${file(".ssh/id_rsa.pub")}"
+  }
 }
 
 resource "yandex_vpc_network" "network" {
